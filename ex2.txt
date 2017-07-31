@@ -1,0 +1,56 @@
+     1	(define kakeizu
+     2	  (read
+     3	   (open-input-file "/usr/local/class/scheme/kakeizu")))
+     4	
+     5	(define myappend
+     6	  (lambda (l)
+     7	    (apply append l)
+     8	    )
+     9	  )
+    10	
+    11	(define get-depth
+    12	  (lambda (tree n)
+    13	    (cond  ((<= n 0)
+    14	            '() )
+    15	           ((equal? n 1)
+    16	            (map car (cdr tree)))
+    17	           ((pair? tree) (myappend (map (lambda (t)(get-depth t (- n 1))) (cdr tree)) ) )
+    18	          (else 'error)
+    19	       )
+    20	    )
+    21	  )
+    22	
+    23	(define get-cousin
+    24	  (lambda (tree name)
+    25	    (get-depth tree (search tree name 0))
+    26	    ))
+    27	(define search
+    28	  (lambda (tree name n)
+    29	    (cond ((eqv? 1 (compare tree name))
+    30	           (+ n 1) )
+    31	          ((null? (cdr tree))
+    32	           '0 )
+    33	          ((pair? tree)
+    34	           (apply + (map (lambda (t)(search t name (+ n 1))) (cdr tree))) )
+    35	          (else '())
+    36	          ) )
+    37	  )
+    38	(define compare
+    39	  (lambda (tree name)
+    40	    (apply + (map (lambda(x)(if (equal? name x)
+    41	                       '1
+    42	                       '0
+    43	                       )) (map car (cdr tree))))
+    44	    ))
+    45	(define get-path
+    46	  (lambda (tree name)
+    47	    (let ( (repath (myappend (map (lambda(t)(get-path t name)) (cdr tree))) ) )
+    48	      (cond ( (null? tree) 
+    49	              '() )
+    50	            ( (equal? (car tree) name)
+    51	              `(,name) )
+    52	            ( (null? repath)
+    53	              '() )
+    54	            (else (cons (car tree) repath) )
+    55	            )))
+    56	    )
