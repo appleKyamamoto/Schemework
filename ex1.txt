@@ -1,0 +1,24 @@
+     1	(define TREE '(1 (2 (3 4)) 6 (7 8 9)) )
+     2	(define TREE2 '(1 2((3 4) 5) (6 (7 8 9))) )
+     3	
+     4	(define map-tree
+     5	  (lambda (fn ls)
+     6	    (cond ( (null? ls)
+     7	            '() )
+     8	          ( (pair? ls)
+     9	            (cons (map-tree fn (car ls)) (map-tree fn (cdr ls)) )
+    10	            )
+    11	          (else
+    12	           (fn ls) )
+    13	          )
+    14	    )
+    15	  )
+    16	
+    17	(define map-tree2
+    18	  (lambda (fn ls)
+    19	    (if(pair? ls)
+    20	       (map (lambda (t)(map-tree2 fn t)) ls)
+    21	       (fn ls)
+    22	       )
+    23	    )
+    24	  )
