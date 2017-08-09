@@ -56,8 +56,8 @@
   (lambda (lst)
     (let ( (nzl (nzlist (make-list (cdr lst)))) )
       (if (null? nzl)
-          (cadr lst)
-          (list '- (cadr lst) (car nzl))
+          (car lst)
+          (list '- (car lst) (car nzl))
           )))
   )
 (define simple*
